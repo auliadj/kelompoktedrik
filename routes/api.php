@@ -8,12 +8,12 @@ use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use App\Http\Controllers\AuthController;
 
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 
 Route::middleware([EnsureFrontendRequestsAreStateful::class])->group(function () {
-   Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum');
+   Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum')->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
    Route::post('users', [UserController::class, 'store'])->middleware('auth:sanctum');
    Route::put('users/{id}', [UserController::class, 'update'])->middleware('auth:sanctum');
    Route::delete('users/{id}', [UserController::class, 'destroy'])->middleware('auth:sanctum');
