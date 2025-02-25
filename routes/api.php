@@ -4,15 +4,16 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Middleware\EnsureTokenIsValid;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 
-Route::middleware(EnsureTokenIsValid::class)->group(function () {
-   Route::get('users', [UserController::class, 'index']);
-   Route::post('users', [UserController::class, 'store']);
-   Route::put('users/{id}', [UserController::class, 'update']);
-   Route::delete('users/{id}', [UserController::class, 'destroy']);
+Route::middleware([EnsureFrontendRequestsAreStateful::class])->group(function () {
+   Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum');
+   Route::post('users', [UserController::class, 'store'])->middleware('auth:sanctum');
+   Route::put('users/{id}', [UserController::class, 'update'])->middleware('auth:sanctum');
+   Route::delete('users/{id}', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 });
+
 
 Route::middleware('api')->group(function () {
   Route::get('product', [ProductController::class, 'index']);
