@@ -4,12 +4,14 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Middleware\EnsureTokenIsValid;
 
-Route::middleware('api')->group(function () {
-  Route::get('users', [UserController::class, 'index']);
-  Route::post('users', [UserController::class,'store'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
-  Route::delete('users/{id}', [UserController::class,'destroy'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
-  Route::put('users/{id}', [UserController::class, 'update'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
+
+Route::middleware(EnsureTokenIsValid::class)->group(function () {
+   Route::get('users', [UserController::class, 'index']);
+   Route::post('users', [UserController::class, 'store']);
+   Route::put('users/{id}', [UserController::class, 'update']);
+   Route::delete('users/{id}', [UserController::class, 'destroy']);
 });
 
 Route::middleware('api')->group(function () {
