@@ -10,7 +10,7 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
-
+Route::post('/logout', [AuthController::class, 'logout'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::middleware([EnsureFrontendRequestsAreStateful::class])->group(function () {
    Route::get('users', [UserController::class, 'index'])->middleware('auth:sanctum')->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class]);
